@@ -1,4 +1,4 @@
-export default {
+export default () => ({
   form: {
     status: 'filling', // filling, processing, success, error
     errorKey: null,
@@ -8,4 +8,4 @@ export default {
   uiState: {
     viewedPostIds: new Set(),
   },
-};
+});

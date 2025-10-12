@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 import * as bootstrap from 'bootstrap';
 import onChange from 'on-change';
-import initialState from './state.js';
+import createState from './state.js';
 import view from './view.js';
 import validate from './validate.js';
 import loadRss from './rss.js';
@@ -26,7 +26,7 @@ const app = () => {
     modalReadMoreLink: document.querySelector('.full-article'),
   };
 
-  const state = onChange(initialState, (path) => {
+  const state = onChange(createState(), (path) => {
     view(elements, state, path);
   });
 
