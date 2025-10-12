@@ -1,7 +1,7 @@
 export default {
   form: {
     status: 'filling', // filling, processing, success, error
-    error: null,
+    errorKey: null,
   },
   feeds: [],
   posts: [],

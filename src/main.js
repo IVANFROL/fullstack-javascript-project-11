@@ -27,14 +27,14 @@ const app = () => {
 
     validate(url, state.feeds)
       .then((validatedData) => {
-        state.form.error = null;
+        state.form.errorKey = null;
         state.form.status = 'success';
         state.feeds.push({ url: validatedData.url, id: Date.now() });
         elements.form.reset();
         elements.input.focus();
       })
       .catch((error) => {
-        state.form.error = error.message;
+        state.form.errorKey = error.key || 'errors.unknown';
         state.form.status = 'error';
       });
   });
