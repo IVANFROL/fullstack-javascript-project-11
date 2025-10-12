@@ -7,6 +7,8 @@ export default {
     feeds: 'Фиды',
     posts: 'Посты',
     viewPost: 'Просмотр',
+    close: 'Закрыть',
+    readMore: 'Читать полностью',
     errors: {
       required: 'Не должно быть пустым',
       invalidUrl: 'Ссылка должна быть валидным URL',

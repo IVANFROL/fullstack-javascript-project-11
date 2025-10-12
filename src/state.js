@@ -6,6 +6,6 @@ export default {
   feeds: [],
   posts: [],
   uiState: {
-    visitedLinks: new Set(),
+    viewedPostIds: new Set(),
   },
 };

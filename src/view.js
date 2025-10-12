@@ -81,7 +81,7 @@ const renderFeeds = (elements, feeds) => {
   feedsContainer.append(card);
 };
 
-const renderPosts = (elements, posts) => {
+const renderPosts = (elements, posts, viewedPostIds) => {
   const { postsContainer } = elements;
 
   if (posts.length === 0) {
@@ -111,13 +111,22 @@ const renderPosts = (elements, posts) => {
 
     const link = document.createElement('a');
     link.setAttribute('href', post.link);
-    link.classList.add('fw-bold');
+    const fontWeightClass = viewedPostIds.has(post.id) ? 'fw-normal' : 'fw-bold';
+    link.classList.add(fontWeightClass);
     link.setAttribute('data-id', post.id);
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener noreferrer');
     link.textContent = post.title;
 
-    li.append(link);
+    const button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+    button.setAttribute('data-id', post.id);
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#modal');
+    button.textContent = i18n.t('viewPost');
+
+    li.append(link, button);
     listGroup.append(li);
   });
 
@@ -127,7 +136,9 @@ const renderPosts = (elements, posts) => {
 };
 
 export default (elements, state, path) => {
-  const { form, feeds, posts } = state;
+  const {
+    form, feeds, posts, uiState,
+  } = state;
 
   if (path === 'form.status' || path === 'form.errorKey') {
     renderFormStatus(elements, form.status, form.errorKey);
@@ -137,7 +148,7 @@ export default (elements, state, path) => {
     renderFeeds(elements, feeds);
   }
 
-  if (path === 'posts') {
-    renderPosts(elements, posts);
+  if (path === 'posts' || path === 'uiState.viewedPostIds') {
+    renderPosts(elements, posts, uiState.viewedPostIds);
   }
 };
