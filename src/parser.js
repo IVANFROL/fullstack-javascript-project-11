@@ -1,4 +1,4 @@
-export default (rssString) => {
+export default rssString => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(rssString, 'text/xml')
 
@@ -13,7 +13,7 @@ export default (rssString) => {
   const feedDescription = doc.querySelector('channel > description').textContent
 
   const items = doc.querySelectorAll('item')
-  const posts = Array.from(items).map((item) => ({
+  const posts = Array.from(items).map(item => ({
     title: item.querySelector('title').textContent,
     description: item.querySelector('description').textContent,
     link: item.querySelector('link').textContent,

@@ -26,19 +26,19 @@ const app = () => {
     modalReadMoreLink: document.querySelector('.full-article'),
   }
 
-  const state = onChange(createState(), (path) => {
+  const state = onChange(createState(), path => {
     view(elements, state, path)
   })
 
   const modal = new bootstrap.Modal(elements.modal)
 
-  const handlePostClick = (postId) => {
+  const handlePostClick = postId => {
     state.uiState.viewedPostIds.add(postId)
     state.uiState.viewedPostIds = new Set(state.uiState.viewedPostIds)
   }
 
-  const showModal = (postId) => {
-    const post = state.posts.find((p) => p.id === postId)
+  const showModal = postId => {
+    const post = state.posts.find(p => p.id === postId)
     if (!post) return
 
     elements.modalTitle.textContent = post.title
@@ -51,7 +51,7 @@ const app = () => {
     modal.show()
   }
 
-  elements.postsContainer.addEventListener('click', (e) => {
+  elements.postsContainer.addEventListener('click', e => {
     const button = e.target.closest('button[data-id]')
     if (button) {
       const postId = button.getAttribute('data-id')
@@ -67,7 +67,7 @@ const app = () => {
 
   const runUpdates = () => {
     updateFeeds(state)
-      .then((newPosts) => {
+      .then(newPosts => {
         if (newPosts.length > 0) {
           state.posts = [...newPosts, ...state.posts]
         }
@@ -77,7 +77,7 @@ const app = () => {
       })
   }
 
-  elements.form.addEventListener('submit', (e) => {
+  elements.form.addEventListener('submit', e => {
     e.preventDefault()
 
     const formData = new FormData(e.target)
@@ -87,7 +87,7 @@ const app = () => {
 
     validate(url, state.feeds)
       .then(() => loadRss(url))
-      .then((data) => {
+      .then(data => {
         const feedId = `feed_${Date.now()}`
         const feed = {
           id: feedId,
@@ -111,7 +111,7 @@ const app = () => {
         elements.form.reset()
         elements.input.focus()
       })
-      .catch((error) => {
+      .catch(error => {
         state.form.errorKey = error.key || 'errors.unknown'
         state.form.status = 'error'
       })

@@ -1,13 +1,13 @@
 import loadRss from './rss.js'
 
 const getNewPosts = (loadedPosts, existingPosts) => {
-  const existingLinks = new Set(existingPosts.map((post) => post.link))
-  return loadedPosts.filter((post) => !existingLinks.has(post.link))
+  const existingLinks = new Set(existingPosts.map(post => post.link))
+  return loadedPosts.filter(post => !existingLinks.has(post.link))
 }
 
-export default (state) => {
-  const promises = state.feeds.map((feed) => loadRss(feed.url)
-    .then((data) => {
+export default state => {
+  const promises = state.feeds.map(feed => loadRss(feed.url)
+    .then(data => {
       const newPosts = getNewPosts(data.posts, state.posts)
 
       if (newPosts.length > 0) {
@@ -27,7 +27,7 @@ export default (state) => {
     .catch(() => []))
 
   return Promise.all(promises)
-    .then((results) => {
+    .then(results => {
       const allNewPosts = results.flat()
       return allNewPosts
     })
