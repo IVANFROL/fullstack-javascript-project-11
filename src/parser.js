@@ -1,4 +1,4 @@
-export default rssString => {
+export default (rssString) => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(rssString, 'text/xml')
 

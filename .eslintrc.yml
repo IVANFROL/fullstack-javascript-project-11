@@ -13,7 +13,7 @@ parserOptions:
 rules:
   no-console: 0
   semi: [error, never]
-  arrow-parens: [error, as-needed]
+  arrow-parens: [error, as-needed, { requireForBlockBody: true }]
   import/extensions:
     - error
     - ignorePackages

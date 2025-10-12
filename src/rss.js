@@ -1,22 +1,22 @@
 import axios from 'axios'
 import parser from './parser.js'
 
-const buildProxyUrl = url => {
+const buildProxyUrl = (url) => {
   const proxyUrl = new URL('https://allorigins.hexlet.app/get')
   proxyUrl.searchParams.set('disableCache', 'true')
   proxyUrl.searchParams.set('url', url)
   return proxyUrl.toString()
 }
 
-export default url => {
+export default (url) => {
   const proxyUrl = buildProxyUrl(url)
 
   return axios.get(proxyUrl)
-    .then(response => {
+    .then((response) => {
       const { contents } = response.data
       return parser(contents)
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.isParsingError) {
         const parsingError = new Error('errors.invalidRss')
         parsingError.key = 'errors.invalidRss'

@@ -23,7 +23,7 @@ export default (url, feeds) => {
   })
 
   return schema.validate({ url })
-    .catch(error => {
+    .catch((error) => {
       const errorKey = error.message.key || error.message
       const translatedError = new Error(i18n.t(errorKey))
       translatedError.key = errorKey

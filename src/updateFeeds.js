@@ -5,9 +5,9 @@ const getNewPosts = (loadedPosts, existingPosts) => {
   return loadedPosts.filter(post => !existingLinks.has(post.link))
 }
 
-export default state => {
+export default (state) => {
   const promises = state.feeds.map(feed => loadRss(feed.url)
-    .then(data => {
+    .then((data) => {
       const newPosts = getNewPosts(data.posts, state.posts)
 
       if (newPosts.length > 0) {
@@ -27,7 +27,7 @@ export default state => {
     .catch(() => []))
 
   return Promise.all(promises)
-    .then(results => {
+    .then((results) => {
       const allNewPosts = results.flat()
       return allNewPosts
     })
