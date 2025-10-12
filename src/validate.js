@@ -1,5 +1,5 @@
-import * as yup from 'yup';
-import i18n from './i18n.js';
+import * as yup from 'yup'
+import i18n from './i18n.js'
 
 yup.setLocale({
   string: {
@@ -9,10 +9,10 @@ yup.setLocale({
     required: () => ({ key: 'errors.required' }),
     notOneOf: () => ({ key: 'errors.duplicate' }),
   },
-});
+})
 
 export default (url, feeds) => {
-  const urls = feeds.map((feed) => feed.url);
+  const urls = feeds.map((feed) => feed.url)
 
   const schema = yup.object().shape({
     url: yup
@@ -20,13 +20,13 @@ export default (url, feeds) => {
       .required()
       .url()
       .notOneOf(urls),
-  });
+  })
 
   return schema.validate({ url })
     .catch((error) => {
-      const errorKey = error.message.key || error.message;
-      const translatedError = new Error(i18n.t(errorKey));
-      translatedError.key = errorKey;
-      throw translatedError;
-    });
-};
+      const errorKey = error.message.key || error.message
+      const translatedError = new Error(i18n.t(errorKey))
+      translatedError.key = errorKey
+      throw translatedError
+    })
+}

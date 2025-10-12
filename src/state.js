@@ -8,4 +8,4 @@ export default () => ({
   uiState: {
     viewedPostIds: new Set(),
   },
-});
+})
