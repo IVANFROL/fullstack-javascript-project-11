@@ -1,6 +1,9 @@
 install:
 	npm ci
 
+setup: install
+	npm run build
+
 lint:
 	npm run lint
 
@@ -13,5 +16,4 @@ build:
 preview:
 	npm run preview
 
-.PHONY: install lint dev build preview
-
+.PHONY: install setup lint dev build preview
