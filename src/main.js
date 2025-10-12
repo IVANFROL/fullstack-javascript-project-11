@@ -5,6 +5,9 @@ import initialState from './state.js';
 import view from './view.js';
 import validate from './validate.js';
 import loadRss from './rss.js';
+import updateFeeds from './updateFeeds.js';
+
+const UPDATE_INTERVAL = 5000; // 5 секунд
 
 const app = () => {
   const elements = {
@@ -19,6 +22,18 @@ const app = () => {
   const state = onChange(initialState, (path) => {
     view(elements, state, path);
   });
+
+  const runUpdates = () => {
+    updateFeeds(state)
+      .then((newPosts) => {
+        if (newPosts.length > 0) {
+          state.posts = [...newPosts, ...state.posts];
+        }
+      })
+      .finally(() => {
+        setTimeout(runUpdates, UPDATE_INTERVAL);
+      });
+  };
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -59,6 +74,8 @@ const app = () => {
         state.form.status = 'error';
       });
   });
+
+  setTimeout(runUpdates, UPDATE_INTERVAL);
 };
 
 app();
