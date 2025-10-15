@@ -8,4 +8,7 @@ export default () => ({
   uiState: {
     viewedPostIds: new Set(),
   },
+  loadingState: {
+    processId: null,
+  },
 })

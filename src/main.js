@@ -3,11 +3,10 @@ import './style.css'
 import * as bootstrap from 'bootstrap'
 import onChange from 'on-change'
 import createState from './state.js'
-import view from './view.js'
+import view, { handlePostClick, showModal } from './view.js'
 import validate from './validate.js'
 import loadRss from './rss.js'
 import updateFeeds from './updateFeeds.js'
-import i18n from './i18n.js'
 
 const UPDATE_INTERVAL = 5000 // 5 секунд
 
@@ -32,48 +31,35 @@ const app = () => {
 
   const modal = new bootstrap.Modal(elements.modal)
 
-  const handlePostClick = (postId) => {
-    state.uiState.viewedPostIds.add(postId)
-    state.uiState.viewedPostIds = new Set(state.uiState.viewedPostIds)
-  }
-
-  const showModal = (postId) => {
-    const post = state.posts.find(p => p.id === postId)
-    if (!post) return
-
-    elements.modalTitle.textContent = post.title
-    elements.modalBody.textContent = post.description
-    elements.modalReadMoreLink.href = post.link
-    elements.modalReadMoreLink.textContent = i18n.t('readMore')
-    elements.modalCloseButton.textContent = i18n.t('close')
-
-    handlePostClick(postId)
-    modal.show()
-  }
-
   elements.postsContainer.addEventListener('click', (e) => {
     const button = e.target.closest('button[data-id]')
     if (button) {
       const postId = button.getAttribute('data-id')
-      showModal(postId)
+      showModal(postId, state, elements, modal)
     }
 
     const link = e.target.closest('a[data-id]')
     if (link) {
       const postId = link.getAttribute('data-id')
-      handlePostClick(postId)
+      handlePostClick(postId, state)
     }
   })
 
   const runUpdates = () => {
+    const processId = Date.now()
+    state.loadingState.processId = processId
+
     updateFeeds(state)
       .then((newPosts) => {
+        if (state.loadingState.processId !== processId) return
         if (newPosts.length > 0) {
           state.posts = [...newPosts, ...state.posts]
         }
       })
       .finally(() => {
-        setTimeout(runUpdates, UPDATE_INTERVAL)
+        if (state.loadingState.processId === processId) {
+          setTimeout(runUpdates, UPDATE_INTERVAL)
+        }
       })
   }
 

@@ -135,6 +135,31 @@ const renderPosts = (elements, posts, viewedPostIds) => {
   postsContainer.append(card)
 }
 
+const handlePostClick = (postId, state) => {
+  const newViewedIds = new Set(state.uiState.viewedPostIds)
+  newViewedIds.add(postId)
+  // eslint-disable-next-line no-param-reassign
+  state.uiState.viewedPostIds = newViewedIds
+}
+
+const showModal = (postId, state, elements, modal) => {
+  const post = state.posts.find(p => p.id === postId)
+  if (!post) return
+
+  const {
+    modalTitle, modalBody, modalReadMoreLink, modalCloseButton,
+  } = elements
+
+  modalTitle.textContent = post.title
+  modalBody.textContent = post.description
+  modalReadMoreLink.href = post.link
+  modalReadMoreLink.textContent = i18n.t('readMore')
+  modalCloseButton.textContent = i18n.t('close')
+
+  handlePostClick(postId, state)
+  modal.show()
+}
+
 export default (elements, state, path) => {
   const {
     form, feeds, posts, uiState,
@@ -152,3 +177,5 @@ export default (elements, state, path) => {
     renderPosts(elements, posts, uiState.viewedPostIds)
   }
 }
+
+export { handlePostClick, showModal }
