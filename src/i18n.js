@@ -3,7 +3,7 @@ import ru from './locales/ru.js'
 
 const i18n = i18next.createInstance()
 
-i18n.init({
+const initPromise = i18n.init({
   lng: 'ru',
   debug: false,
   resources: {
@@ -12,3 +12,4 @@ i18n.init({
 })
 
 export default i18n
+export { initPromise }
